@@ -20,7 +20,7 @@ export const SignIn = () => {
       <div>
         <Heading label={"Sign in"} />
         <SubHeading label={"Enter your credentials to access your account"} />
-        <InputBox placeholder="harkirat@gmail.com" label={"Email"} onChange={(e) => {
+        <InputBox placeholder="d892@gmail.com" label={"Email"} onChange={(e) => {
             setUsername(e.target.value);
         }}/>
         <InputBox placeholder="123456" label={"Password"} onChange={(e)=>{
@@ -28,13 +28,16 @@ export const SignIn = () => {
         }}/>
         <div>
           <Button label={"Sign in"} onClick={async () => {
-            const response = await axios.post("http://localhost:3000/api/v1/user/signin", {
+            if(!username || !password) return;
+            await axios.post("http://localhost:3000/api/v1/user/signin", {
             username,
             password
-            });
+            })
             // localStorage.setItem("token", response.data.token)
-            setTokenAtom(response.data.token);
-            navigate("/")}}/>
+            .then(res => setTokenAtom(res.data.token))
+            .then(() => navigate("/"))
+            .catch(err => console.log(err));
+          }}/>
         </div>
         <BottomWarning label={"Don't have an account?"} buttonText={"Sign up"} to={"/signup"} />
       </div>

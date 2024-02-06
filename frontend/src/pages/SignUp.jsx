@@ -36,15 +36,17 @@ export const SignUp = () => {
                 }} placeholder="Password" label={"Password"} />
                 <div className="pt-4">
                 <Button onClick={async () => {
-                    const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
+                    if(!username || !password || !firstName || !lastName) return;
+                    await axios.post("http://localhost:3000/api/v1/user/signup", {
                     username,
                     firstName,
                     lastName,
                     password
-                    });
+                    })
                     // localStorage.setItem("token", response.data.token)
-                    setTokenAtom(response.data.token);
-                    navigate("/")
+                    .then(res => setTokenAtom(res.data.token))
+                    .then(() => navigate("/"))
+                    .catch(err => console.log(err));
                 }} label={"Sign up"} />
                 </div>
                 <BottomWarning label={"Already have an account?"} buttonText={"Sign in"} to={"/signin"} />
