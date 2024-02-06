@@ -5,11 +5,14 @@ import { InputBox } from "../components/InputBox"
 import { SubHeading } from "../components/SubHeading"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
+import { tokenAtom } from "../store/atoms"
+import { useSetRecoilState } from "recoil"
 import axios from "axios"
 
 export const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const setTokenAtom = useSetRecoilState(tokenAtom);
   const navigate = useNavigate();
 
   return <div>
@@ -29,7 +32,8 @@ export const SignIn = () => {
             username,
             password
             });
-            localStorage.setItem("token", response.data.token)
+            // localStorage.setItem("token", response.data.token)
+            setTokenAtom(response.data.token);
             navigate("/")}}/>
         </div>
         <BottomWarning label={"Don't have an account?"} buttonText={"Sign up"} to={"/signup"} />
