@@ -5,14 +5,14 @@ import { InputBox } from "../components/InputBox"
 import { SubHeading } from "../components/SubHeading"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
-import { tokenAtom } from "../store/atoms"
-import { useSetRecoilState } from "recoil"
+// import { tokenAtom } from "../store/atoms"
+// import { useSetRecoilState } from "recoil"
 import axios from "axios"
 
 export const SignIn = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const setTokenAtom = useSetRecoilState(tokenAtom);
+  // const setTokenAtom = useSetRecoilState(tokenAtom);
   const navigate = useNavigate();
 
   return <div>
@@ -32,9 +32,16 @@ export const SignIn = () => {
             await axios.post("http://localhost:3000/api/v1/user/signin", {
             username,
             password
+            },
+            {
+              withCredentials: true,
+              // credentials: 'include',
+              // headers: {
+              //   "Access-Control-Allow-Origin": "*"
+              // }
             })
             // localStorage.setItem("token", response.data.token)
-            .then(res => setTokenAtom(res.data.token))
+            // .then(res => setTokenAtom(res.data.token))
             .then(() => navigate("/"))
             .catch(err => console.log(err));
           }}/>

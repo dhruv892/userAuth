@@ -1,7 +1,7 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
-import { SignUp } from "./pages/Signup";
-import { SignIn } from "./pages/Signin";
+import { SignUp } from "./pages/SignUp";
+import { SignIn } from "./pages/SignIn";
 import { Home } from "./pages/Home";
 // import './App.css';
 import { RecoilRoot } from 'recoil';

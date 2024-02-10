@@ -4,6 +4,7 @@ const {User} = require('../db');
 const jwt = require('jsonwebtoken');
 // const {JWT_SECRET} = require('../config');
 const  { authMiddleware } = require("../middleware");
+
 require('dotenv').config();
 
 const signUpBody = zod.object({
@@ -29,6 +30,9 @@ const updateBody = zod.object({
 const router = express.Router();
 
 
+// router.use();
+
+
 // Method: POST 
 // Route: /api/v1/user/signup
 router.post("/signup", async (req, res)=>{
@@ -48,20 +52,21 @@ router.post("/signup", async (req, res)=>{
             message: "Already a user / Incorrect inputs"
         });
     }
-    const user = User.create({
+    const user = await User.create({
         username: req.body.username,
         password: req.body.password,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
     });
     const userId = user._id;
-    const token = jwt.sign({
-        userId
-    },process.env.JWT_SECRET);
+    req.session.userId = userId;
+    // const token = jwt.sign({
+    //     userId
+    // },process.env.JWT_SECRET);
 
     res.status(200).json({
         message: "User created",
-        token
+        // token
     })
 });
 
@@ -80,11 +85,15 @@ router.post("/signin", async (req, res) => {
         password: req.body.password,
     })
     if(user){
-        const token = jwt.sign({
-            userId: user._id
-        }, process.env.JWT_SECRET);
+        // const token = jwt.sign({
+        //     userId: user._id
+        // }, process.env.JWT_SECRET);
+        
+        req.session.userId = user._id;
+        // req.session.authorized = true;
         return res.json({
-            token: token
+            message: "Logged in",
+            // token: token
         })
     }
 
@@ -93,6 +102,14 @@ router.post("/signin", async (req, res) => {
     })
 
 })
+
+
+router.get("/signout", (req, res) => {
+    req.session.destroy();
+    res.json({
+        message: "Logged out"
+    })
+});
 
 // Method: PUT
 // Route: /api/v1/user

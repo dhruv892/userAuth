@@ -11,16 +11,15 @@ mongoose.connect(process.env.MONGO_URL , {
     console.log(err);
 })
 
-
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
         trim: true,
-        unique: true,
+        unique: [true, "Username already exists"],
         lowercase: true,
         minLength: 3,
-        maxLength: 20,
+        maxLength: 50,
     },
     password: {
         type: String,

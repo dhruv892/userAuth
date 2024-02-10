@@ -6,15 +6,15 @@ import { InputBox } from "../components/InputBox"
 import { SubHeading } from "../components/SubHeading"
 import axios from "axios";
 import { useNavigate } from "react-router-dom"
-import { tokenAtom } from "../store/atoms"
-import { useSetRecoilState } from "recoil"
+// import { tokenAtom } from "../store/atoms"
+// import { useSetRecoilState } from "recoil"
 
 export const SignUp = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const setTokenAtom = useSetRecoilState(tokenAtom);
+    // const setTokenAtom = useSetRecoilState(tokenAtom);
     const navigate = useNavigate();
 
     return <div>
@@ -42,9 +42,12 @@ export const SignUp = () => {
                     firstName,
                     lastName,
                     password
+                    },
+                    {
+                        withCredentials: true,
                     })
                     // localStorage.setItem("token", response.data.token)
-                    .then(res => setTokenAtom(res.data.token))
+                    // .then(res => setTokenAtom(res.data.token))
                     .then(() => navigate("/"))
                     .catch(err => console.log(err));
                 }} label={"Sign up"} />
